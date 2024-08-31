@@ -39,14 +39,6 @@ const Login = () => {
     // };
 
     
-    // const handleGithubSignIn = async () => {
-    //     try {
-    //         await signInWithGithub();
-    //         navigate(location?.state ? location.state : "/");
-    //     } catch (error) {
-    //         console.error("Github sign in error:", error);
-    //     }
-    // };
     return (
         <div className="container mx-auto lg:px-20 px-5 py-5">
             <div>
