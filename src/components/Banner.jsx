@@ -1,7 +1,7 @@
 import img from "../assets/image/Illustration.png"
 const Banner = () => {
     return (
-        <div className="container mx-auto lg:px-12 px-5 py-5">
+        <div className="container mx-auto lg:px-12 px-5 py-5 bg-gray-50">
             <div className="flex items-center justify-between">
                 <div>
                     <h1 className="text-5xl">Find Your Next <br /> Job with Us</h1>
