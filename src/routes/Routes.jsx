@@ -14,7 +14,7 @@ const router = createBrowserRouter([
             {
                 path: '/',
                 element: <Home />,
-                //loader: () => fetch("https://p-track-server.vercel.app/products?page=1&limit=10")
+                loader: () => fetch("http://localhost:5000/posts")
 
             },
             {

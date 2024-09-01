@@ -1,33 +1,35 @@
-import { useState, useEffect } from "react";
+import React from "react";
+import BlurFade from "../BlurFade";
+import { CiLocationOn } from "react-icons/ci";
+import { BsDot } from "react-icons/bs";
+import img from "../assets/image/briefcase-duotone1.png";
 
 const Card = ({ card }) => {
-    const { productImage, productName, description, price, category, brandName, ratings, creationDateTime, _id } = card;
-    const [isVisible, setIsVisible] = useState(false);
-
-    useEffect(() => {
-        setIsVisible(true);
-    }, []);
+    const { companyName, location, jobPostName, jobType, salary } = card;
 
     return (
-        <div
-            className={`card w-full bg-base-100 shadow-2xl shadow-violet-300 transform transition-transform duration-500 ease-out ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"
-            }`}
-        >
-            <figure className="px-10 pt-10">
-                <img src={productImage} alt={productName} className="rounded-xl h-48 w-full object-cover" />
-            </figure>
-            <div className="card-body">
-                <h2 className="card-title">{productName}</h2>
-                <p className="text-sm text-gray-500">Brand: {brandName}</p>
-                <p className="text-sm text-gray-500">Category: {category}</p>
-                <p>{description}</p>
-                <p className="text-lg font-semibold">Price: ${price}</p>
-                <p className="text-sm text-gray-500">Ratings: {ratings} / 5</p>
-                <p className="text-sm text-gray-500">Created on: {new Date(creationDateTime).toLocaleString()}</p>
-                
+        <BlurFade delay={0.25} inView>
+            <div className="border border-gray-400 rounded-xl p-6 bg-gradient-to-r from-amber-100">
+                <div className="pb-4 flex items-center gap-3">
+                    <img className="h-4 w-4 p-3" src={img} alt="Company Logo" />
+                    <div>
+                        <h3 className="pb-2 text-base font-medium">{companyName}</h3>
+                        <p className="inline-flex items-center gap-2 text-sm font-normal text-gray-400">
+                            <CiLocationOn /> {location}
+                        </p>
+                    </div>
+                </div>
+                <div>
+                    <h2 className="text-xl font-semibold pb-2">{jobPostName}</h2>
+                    <div className="flex items-center gap-2">
+                        <p className="text-gray-400">{jobType}</p>
+                        <p className="flex items-center gap-1 text-gray-400">
+                            <BsDot /> {salary}
+                        </p>
+                    </div>
+                </div>
             </div>
-        </div>
+        </BlurFade>
     );
 };
 
