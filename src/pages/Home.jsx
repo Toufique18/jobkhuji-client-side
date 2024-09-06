@@ -5,7 +5,7 @@ import Card from "../components/Card";
 
 const Home = () => {
     const cards = useLoaderData();
-    const limitedCards = cards.slice(0, 5);
+    const limitedCards = cards.slice(0, 12);
     return (
         <div>
             <Banner></Banner>

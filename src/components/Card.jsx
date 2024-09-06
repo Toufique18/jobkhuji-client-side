@@ -1,8 +1,8 @@
-import React from "react";
 import BlurFade from "../BlurFade";
 import { CiLocationOn } from "react-icons/ci";
 import { BsDot } from "react-icons/bs";
 import img from "../assets/image/briefcase-duotone1.png";
+import { BorderBeam } from "../pages/BorderBeam";
 
 const Card = ({ card }) => {
     const { companyName, location, jobPostName, jobType, salary } = card;
@@ -28,7 +28,18 @@ const Card = ({ card }) => {
                         </p>
                     </div>
                 </div>
+                <BorderBeam
+        className="your-custom-classes"
+        size={250}
+        duration={12}
+        anchor={75}
+        borderWidth={2}
+        colorFrom="#ff0000"
+        colorTo="#0000ff"
+        delay={8}
+      />
             </div>
+           
         </BlurFade>
     );
 };
