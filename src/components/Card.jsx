@@ -6,10 +6,10 @@ import { BorderBeam } from "../pages/BorderBeam";
 import { Link } from "react-router-dom";
 
 const Card = ({ card }) => {
-    const { companyName, location, jobPostName, jobType, salary } = card;
+    const { companyName, location, jobPostName, jobType, salary, _id } = card;
 
     return (
-        <Link to={"/details"}>
+        <Link to={`/details/${_id}`}>
         <BlurFade delay={0.25} inView>
             <div className="border border-gray-400 rounded-xl p-6 bg-gradient-to-r from-amber-100">
                 <div className="pb-4 flex items-center gap-3">
