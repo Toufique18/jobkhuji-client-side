@@ -24,7 +24,7 @@ const Header = () => {
     const links = <>
 
         <li><NavLink className={({ isActive }) => isActive ? "btn text-purple-600 border-b-2 border-b-purple-500 text-lg font-normal font-['Work Sans']" : "text-neutral-900 text-opacity-80 text-lg font-normal font-['Work Sans']"} to="/">Home</NavLink></li>
-        <li><NavLink className={({ isActive }) => isActive ? "btn text-purple-600 border-b-2 border-b-purple-500 text-lg font-normal font-['Work Sans']" : "text-neutral-900 text-opacity-80 text-lg font-normal font-['Work Sans']"} to="/findJob">Find Job</NavLink></li>
+        <li><NavLink className={({ isActive }) => isActive ? "btn text-purple-600 border-b-2 border-b-purple-500 text-lg font-normal font-['Work Sans']" : "text-neutral-900 text-opacity-80 text-lg font-normal font-['Work Sans']"} to="/findJobs">Find Job</NavLink></li>
 
 
 

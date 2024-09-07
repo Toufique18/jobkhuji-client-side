@@ -4,6 +4,7 @@ import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Details from "../pages/Details";
+import FindJob from "../pages/FindJob";
 //import PrivateRoute from "../pages/PrivateRoute";
 
 
@@ -30,6 +31,11 @@ const router = createBrowserRouter([
                 path: '/details/:_id',
                 element: <Details></Details>,
                 loader: () => fetch("http://localhost:5000/posts")
+            },
+            {
+                path: '/findJobs',
+                element: <FindJob></FindJob>,
+                loader: () => fetch("http://localhost:5000/jobs?page=1&limit=12")
             },
             
             
