@@ -42,7 +42,7 @@ const Details = () => {
                             <div className="gap-1 flex items-center pt-3">
                                 <p className="flex items-center gap-1 text-[#474c54] text-base font-normal font-['Inter']">
                                     <img className="h-5 w-5" src={img6} alt="website" /> 
-                                    <a href={job.companyWebsite} target="_blank" rel="noopener noreferrer">website link</a>
+                                    <a href={job.companyWebsite} target="_blank" rel="noopener noreferrer">{job.companyWebsite}</a>
                                 </p>
                                 <p className="flex items-center gap-1 text-[#474c54] text-base font-normal font-['Inter'] px-2">
                                     <img className="h-5 w-5" src={img8} alt="phone" />
