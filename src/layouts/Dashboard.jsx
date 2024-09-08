@@ -1,0 +1,69 @@
+import { NavLink, Outlet } from "react-router-dom";
+import useAdmin from "../hook/useAdmin";
+import useEmployer from "../hook/useEmployer";
+import useCandidate from "../hook/useCandidate";
+import { useContext } from "react";
+import { AuthContext } from "../provider/AuthProvider";
+
+const Dashboard = () => {
+    const [isAdmin, isAdminLoading] = useAdmin();
+    const [isEmployer, isEmployerLoading] = useEmployer();
+    const [isCandidate, isCandidateLoading] = useCandidate();
+    const { logOut } = useContext(AuthContext);
+
+    const handleLogOut = () => {
+        logOut()
+            .then()
+            .catch()
+    }
+
+    if (isAdminLoading || isEmployerLoading || isCandidateLoading) {
+        return <div>Loading...</div>;
+    }
+
+    return (
+        <div className="lg:flex">
+            <div className="drawer lg:w-80 lg:drawer-open">
+                <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
+                <div className="drawer-content items-start justify-center">
+                    <label htmlFor="my-drawer-2" className="btn btn-ghost drawer-button lg:hidden">Open sidebar</label>
+                </div>
+                <div className="drawer-side">
+                    <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
+                    <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
+                        <li><NavLink to={'/'}>Home</NavLink></li>
+                        <div className="divider"></div>
+
+                        {isAdmin && (
+                            <>
+                                <li><NavLink to={'/dashboard/manageUser'}>Manage Users</NavLink></li>
+                                
+                            </>
+                        )}
+                        {isEmployer && (
+                            <>
+                                <li><NavLink to={'/dashboard/postJob'}>Post Job</NavLink></li>
+                                <li><NavLink to={'/dashboard/myPostedJobs'}>My Posted Jobs</NavLink></li>
+                                <li><NavLink to={'/dashboard/jobApplications'}>Job Applications</NavLink></li>
+                            </>
+                        )}
+                        {isCandidate && (
+                            <>
+                                <li><NavLink to={'/dashboard/findJobs'}>Find Jobs</NavLink></li>
+                                <li><NavLink to={'/dashboard/myApplications'}>My Applications</NavLink></li>
+                                <li><NavLink to={'/dashboard/myProfile'}>My Profile</NavLink></li>
+                            </>
+                        )}
+
+                        <div className="divider"></div>
+                    </ul>
+                </div>
+            </div>
+            <div>
+                <Outlet />
+            </div>
+        </div>
+    );
+};
+
+export default Dashboard;

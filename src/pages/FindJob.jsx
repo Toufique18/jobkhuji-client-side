@@ -6,17 +6,22 @@ const FindJob = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [searchTerm, setSearchTerm] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedJobType, setselectedJobType] = useState([]);
+    const [selectedCategories, setSelectedCategories] = useState([]);
+    const [salaryRange, setsalaryRange] = useState('');
+    const [sortOption, setSortOption] = useState('');
 
     useEffect(() => {
         const fetchJobs = async () => {
-            const response = await fetch(`http://localhost:5000/jobs?page=${currentPage}&limit=12&search=${searchTerm}`);
+            const response = await fetch(`http://localhost:5000/jobs?page=${currentPage}&limit=12&search=${searchTerm}&jobtype=${selectedJobType.join(',')}&categories=${selectedCategories.join(',')}&salaryrange=${salaryRange}&sort=${sortOption}`);
             const data = await response.json();
             setJobs(data.jobs);
             setTotalPages(data.totalPages);
         };
 
         fetchJobs();
-    }, [currentPage, searchTerm]);
+    }, [currentPage, searchTerm, selectedJobType, selectedCategories, salaryRange, sortOption]);
 
     const handlePageChange = (page) => {
         if (page > 0 && page <= totalPages) {
@@ -26,6 +31,33 @@ const FindJob = () => {
 
     const handleSearchChange = (e) => {
         setSearchTerm(e.target.value);
+        setCurrentPage(1);
+    };
+
+    const handleJobTypeChange = (e) => {
+        const { value, checked } = e.target;
+        setselectedJobType((prev) =>
+            checked ? [...prev, value] : prev.filter((jobtypes) => jobtypes !== value)
+        );
+    };
+
+    const handleCategoryChange = (e) => {
+        const { value, checked } = e.target;
+        setSelectedCategories((prev) =>
+            checked ? [...prev, value] : prev.filter((category) => category !== value)
+        );
+    };
+
+    const handleSalaryRangeChange = (e) => {
+        setsalaryRange(e.target.value);
+    };
+
+    const handleSortChange = (e) => {
+        setSortOption(e.target.value);
+    };
+
+    const applyFilters = () => {
+        setIsModalOpen(false);
         setCurrentPage(1);
     };
 
@@ -41,6 +73,22 @@ const FindJob = () => {
                     value={searchTerm}
                     onChange={handleSearchChange}
                 />
+                <button
+                    className="btn ml-2"
+                    onClick={() => setIsModalOpen(true)}
+                >
+                    Filter Jobs
+                </button>
+                <select
+                    className="select select-bordered ml-2"
+                    value={sortOption}
+                    onChange={handleSortChange}
+                >
+                    <option value="">Sort By</option>
+                    <option value="salary-asc">Salary: Low to High</option>
+                    <option value="salary-desc">Salary: High to Low</option>
+                    <option value="date-desc">Date Added: Newest First</option>
+                </select>
                 
                 
             </div>
@@ -77,6 +125,81 @@ const FindJob = () => {
                     </button>
                 </div>
             </div>
+            {isModalOpen && (
+                <div className="modal modal-open">
+                    <div className="modal-box w-11/12 max-w-5xl">
+                        <h2 className="text-xl font-bold mb-4">Filter Jobs</h2>
+
+                        <div className="flex justify-around">
+                        <div className="mb-4">
+                            <h3 className="text-lg font-semibold pb-3">Job Type</h3>
+                            <div className="flex flex-col">
+                                {["Full Time", "Part Time", "Internship", "Remote", "Contract Base"].map((jobtypes) => (
+                                    <label key={jobtypes} className="flex items-center pb-2">
+                                        <input
+                                            type="checkbox"
+                                            value={jobtypes}
+                                            checked={selectedJobType.includes(jobtypes)}
+                                            onChange={handleJobTypeChange}
+                                            className="checkbox"
+                                        />
+                                        <span className="ml-2">{jobtypes}</span>
+                                    </label>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="mb-4">
+                            <h3 className="text-lg font-semibold pb-3">Categories</h3>
+                            <div className="flex flex-col">
+                                {["Software Development", "Marketing and Sales", "Data Science & Analytics", "Design & Creative", "Customer Support", "Human Resources", "Finance & Accounting", "Operations & Management"].map((category) => (
+                                    <label key={category} className="flex items-center pb-2">
+                                        <input
+                                            type="checkbox"
+                                            value={category}
+                                            checked={selectedCategories.includes(category)}
+                                            onChange={handleCategoryChange}
+                                            className="checkbox"
+                                        />
+                                        <span className="ml-2">{category}</span>
+                                    </label>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="mb-4">
+                            <h3 className="text-lg font-semibold pb-3">Salary Range</h3>
+                            <select
+                                value={salaryRange}
+                                onChange={handleSalaryRangeChange}
+                                className="select select-bordered w-full"
+                            >
+                                <option value="">Select Salary Range(All)</option>
+                                <option value="0-100">$0 - $100</option>
+                                <option value="101-200">$101 - $200</option>
+                                <option value="201-500">$201 - $500</option>
+                                <option value="500+">$500+</option>
+                            </select>
+                        </div>
+                        </div>
+
+                        <div className="modal-action">
+                            <button
+                                className="btn"
+                                onClick={applyFilters}
+                            >
+                                Apply Filters
+                            </button>
+                            <button
+                                className="btn text-white bg-blue-500"
+                                onClick={() => setIsModalOpen(false)}
+                            >
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

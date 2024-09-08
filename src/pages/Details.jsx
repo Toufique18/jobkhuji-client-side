@@ -83,7 +83,7 @@ const Details = () => {
                             <div className="text-start">
                                 <img className="h-9 w-9 pb-3" src={img2} alt="calendar" />
                                 <p className="text-[#767f8c] text-xs font-normal font-['Inter'] uppercase">Job Posted:</p>
-                                <h6 className="text-[#18191c] text-sm font-medium font-['Inter']">{formatDate(job.postedDate)}</h6>
+                                <h6 className="text-[#18191c] text-sm font-medium font-['Inter']">{formatDate(job.vacancyPostedDate)}</h6>
                             </div>
                             <div>
                                 <img className="h-9 w-9 pb-3" src={img3} alt="timer" />
@@ -98,7 +98,7 @@ const Details = () => {
                             <div>
                                 <img className="h-9 w-9 pb-3" src={img4} alt="wallet" />
                                 <p className="text-[#767f8c] text-xs font-normal font-['Inter'] uppercase">Salary:</p>
-                                <h6 className="text-[#18191c] text-sm font-medium font-['Inter']">{job.salary}</h6>
+                                <h6 className="text-[#18191c] text-sm font-medium font-['Inter']">BDT {job.salary}</h6>
                             </div>
                             <div>
                                 <img className="h-9 w-9 pb-3" src={img5} alt="location" />

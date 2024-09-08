@@ -26,7 +26,7 @@ const Card = ({ card }) => {
                     <div className="flex items-center gap-2">
                         <p className="text-gray-400">{jobType}</p>
                         <p className="flex items-center gap-1 text-gray-400">
-                            <BsDot /> {salary}
+                            <BsDot />BDT {salary}
                         </p>
                     </div>
                 </div>

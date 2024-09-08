@@ -5,6 +5,8 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Details from "../pages/Details";
 import FindJob from "../pages/FindJob";
+import Dashboard from "../layouts/Dashboard";
+import Overview from "../pages/Overview";
 //import PrivateRoute from "../pages/PrivateRoute";
 
 
@@ -36,6 +38,16 @@ const router = createBrowserRouter([
                 path: '/findJobs',
                 element: <FindJob></FindJob>,
                 loader: () => fetch("http://localhost:5000/jobs?page=1&limit=12")
+            },
+            {
+                path: '/dashboard',
+                element: <Dashboard></Dashboard>,
+                children: [
+                    {
+                        path: 'overview',
+                        element: <Overview></Overview>
+                    },
+                ]
             },
             
             
