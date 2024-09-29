@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import Root from "../layouts/Root";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
@@ -6,7 +6,14 @@ import Register from "../pages/Register";
 import Details from "../pages/Details";
 import FindJob from "../pages/FindJob";
 import Dashboard from "../layouts/Dashboard";
-import Overview from "../pages/Overview";
+import MyApplication from "../pages/MyApplication";
+import CustomerSupports from "../pages/CustomerSupports";
+import PostJob from "../pages/PostJob";
+import UserProfile from "../pages/UserProfile";
+import UserPersonal from "../pages/candidateProfile/UserPersonal";
+import Userprofile from "../pages/candidateProfile/UserProfile";
+import SocialLink from "../pages/candidateProfile/SocialLink";
+
 //import PrivateRoute from "../pages/PrivateRoute";
 
 
@@ -43,11 +50,43 @@ const router = createBrowserRouter([
                 path: '/dashboard',
                 element: <Dashboard></Dashboard>,
                 children: [
+                    
                     {
-                        path: 'overview',
-                        element: <Overview></Overview>
+                        path: 'myApplications',
+                        element: <MyApplication></MyApplication>
+                    },
+                    {
+                        path: 'postJob',
+                        element: <PostJob></PostJob>
+                    },
+                    {
+                        path: 'userProfile',
+                        element: <UserProfile></UserProfile>,
+                        children: [
+                            {
+                                index: true, 
+                                element: <Navigate to="userPersonal" />
+                            },
+                            {
+                                path: 'userPersonal',
+                                element: <UserPersonal></UserPersonal>
+                            },
+                            {
+                                path: 'UserProfile',
+                                element: <Userprofile></Userprofile>
+                            },
+                            {
+                                path: 'userSocialLinks',
+                                element: <SocialLink></SocialLink>
+                            },
+                        ]
+
                     },
                 ]
+            },
+            {
+                path: 'customerSupports',
+                element: <CustomerSupports></CustomerSupports>
             },
             
             

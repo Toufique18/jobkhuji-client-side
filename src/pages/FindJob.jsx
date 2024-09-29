@@ -14,7 +14,7 @@ const FindJob = () => {
 
     useEffect(() => {
         const fetchJobs = async () => {
-            const response = await fetch(`http://localhost:5000/jobs?page=${currentPage}&limit=12&search=${searchTerm}&jobtype=${selectedJobType.join(',')}&categories=${selectedCategories.join(',')}&salaryrange=${salaryRange}&sort=${sortOption}`);
+            const response = await fetch(`http://localhost:5000/jobs?page=${currentPage}&limit=12&search=${searchTerm}&jobtype=${selectedJobType.join(',')}&categories=${selectedCategories.join(',')}&salaryRange=${salaryRange}&sort=${sortOption}`);
             const data = await response.json();
             setJobs(data.jobs);
             setTotalPages(data.totalPages);
@@ -152,7 +152,7 @@ const FindJob = () => {
                         <div className="mb-4">
                             <h3 className="text-lg font-semibold pb-3">Categories</h3>
                             <div className="flex flex-col">
-                                {["Software Development", "Marketing and Sales", "Data Science & Analytics", "Design & Creative", "Customer Support", "Human Resources", "Finance & Accounting", "Operations & Management"].map((category) => (
+                                {["Software Development", "Marketing and Sales", "Data Science and Analytics", "Design and Creative", "Customer Support", "Human Resources", "Finance and Accounting", "Operations and Management"].map((category) => (
                                     <label key={category} className="flex items-center pb-2">
                                         <input
                                             type="checkbox"
@@ -175,10 +175,10 @@ const FindJob = () => {
                                 className="select select-bordered w-full"
                             >
                                 <option value="">Select Salary Range(All)</option>
-                                <option value="0-100">$0 - $100</option>
-                                <option value="101-200">$101 - $200</option>
-                                <option value="201-500">$201 - $500</option>
-                                <option value="500+">$500+</option>
+                                <option value="0-15000">0 - 15000 BDT</option>
+                                <option value="15001-25000">15001 - 25000 BDT</option>
+                                <option value="25001-50000">25001 - 50000 BDT</option>
+                                <option value="50000+">50000+ BDT</option>
                             </select>
                         </div>
                         </div>

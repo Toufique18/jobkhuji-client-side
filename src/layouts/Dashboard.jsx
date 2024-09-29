@@ -22,15 +22,15 @@ const Dashboard = () => {
     }
 
     return (
-        <div className="lg:flex">
-            <div className="drawer lg:w-80 lg:drawer-open">
+        <div className="lg:flex bg-white">
+            <div className="drawer lg:w-1/4 lg:drawer-open">
                 <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
                 <div className="drawer-content items-start justify-center">
                     <label htmlFor="my-drawer-2" className="btn btn-ghost drawer-button lg:hidden">Open sidebar</label>
                 </div>
                 <div className="drawer-side">
                     <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
-                    <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
+                    <ul className="menu w-72 min-h-full border border-l-2 pr-4 text-base-content">
                         <li><NavLink to={'/'}>Home</NavLink></li>
                         <div className="divider"></div>
 
@@ -51,7 +51,7 @@ const Dashboard = () => {
                             <>
                                 <li><NavLink to={'/dashboard/findJobs'}>Find Jobs</NavLink></li>
                                 <li><NavLink to={'/dashboard/myApplications'}>My Applications</NavLink></li>
-                                <li><NavLink to={'/dashboard/myProfile'}>My Profile</NavLink></li>
+                                <li><NavLink to={'/dashboard/userProfile'}>My Profile</NavLink></li>
                             </>
                         )}
 
@@ -59,7 +59,7 @@ const Dashboard = () => {
                     </ul>
                 </div>
             </div>
-            <div>
+            <div className="w-3/4">
                 <Outlet />
             </div>
         </div>

@@ -1,0 +1,58 @@
+BEGIN:VCALENDAR
+PRODID:-//Google Inc//Google Calendar 70.9054//EN
+VERSION:2.0
+CALSCALE:GREGORIAN
+METHOD:REQUEST
+BEGIN:VTIMEZONE
+TZID:Asia/Dhaka
+X-LIC-LOCATION:Asia/Dhaka
+BEGIN:STANDARD
+TZOFFSETFROM:+0600
+TZOFFSETTO:+0600
+TZNAME:GMT+6
+DTSTART:19700101T000000
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+DTSTART;TZID=Asia/Dhaka:20240909T144500
+DTEND;TZID=Asia/Dhaka:20240909T150000
+DTSTAMP:20240906T155737Z
+ORGANIZER;CN=Saurav Chandra Shil:mailto:saurav@programming-hero.com
+UID:r4741mksvedgal7pn4fhl6rj38@google.com
+ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;RSVP=TRUE
+ ;CN=Saurav Chandra Shil;X-NUM-GUESTS=0:mailto:saurav@programming-hero.com
+ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=
+ TRUE;CN=toufiqueeamam7@gmail.com;X-NUM-GUESTS=0:mailto:toufiqueeamam7@gmail
+ .com
+X-MICROSOFT-CDO-OWNERAPPTID:633153242
+CREATED:20240906T155735Z
+DESCRIPTION:Event Name: EndGame-9: INTERVIEW\n\nইন্টারভিউ সম্পর্কিত রুলসঃ\n
+ \n1. আপনি যে স্লটটি বুক করতে চাচ্ছেন তা যদি ইতিমধ্যে বুক হয়ে থাকে\, তবে অন
+ ্য স্লট দেখতে পারেন।\n\n\n2. স্লট বুক করার সময় অবশ্যই নিজের নাম\, স্টুডেন্
+ ট ইমেইল এড্রেস প্রদান করবেন। \n\n\n3.  নির্ধারিত সময়ের অন্তত ৫ মিনিট পুর্ব
+ ে জয়েন রিকুয়েস্ট দিতে হবে। জয়েন রিকুয়েস্ট দিয়ে লিভ নিয়ে নিলে ইন্টারভি
+ উ মিস হয়ে যেতে পারে। \n\n\n4. অবশ্যই স্টুডেন্ট ইমেইল দিয়ে জয়েন করতে হবে 
+ এবং সেটি স্লট সিলেক্ট করার সময় নাম\, ইমেইল এর সাথে ডেসক্রিপশন নামে যে বক্স
+ টা থাকবে সেখানে প্রদান করতে হবে।\n\n\n5. একজন শুধুমাত্র ১ টি স্লট সিলেক্ট ক
+ রতে পারবে। একের বেশি সিলেক্ট করলে ইন্টারভিউতে শূন্য(০) মার্ক প্রদান করা হবে
+ ।\n\n\n6. ভিডিও ক্যামেরা অন রাখতে হবে। জয়েন করার পূর্বে অবশ্যই ভিডিও ক্যাম
+ েরা চেক করে দেখবে।\n\n\n7. ক্যামেরা জনিত ইস্যু থাকলে এক বা একাধিক (মোবাইল) 
+ ডিভাইস দিয়ে জয়েন করতে পারেন। অবশ্যই আগে থেকে চেক করে দেখবেন।\n\n\n8. ক্যা
+ মেরা\, মাইক বা অন্যান্য যেকোনো চ্যালেঞ্জ ঘটলে ইন্টারভিউ এর মার্ক কমে যেতে প
+ ারে।\n\n\n9. ইন্টারভিউ এর ভাষা ইংরেজি কিংবা বাংলাতে হতে পারে। তবে ইংরেজিতে 
+ বেশি ফোকাস করা হয়ে থাক।\n\nLocation: https://meet.google.com/fgx-vyvh-msr\
+ n\nPlease provide your resume link here.: <a href="https://calendly.com/url
+ ?q=https%3A%2F%2Fdrive.google.com%2Ffile%2Fd%2F18tfm7HL5aQx80Cfr1_4tdUDffHs
+ Objsj%2Fview%3Fusp%3Ddrive_link">https://drive.google.com/file/d/18tfm7HL5a
+ Qx80Cfr1_4tdUDffHsObjsj/view?usp=drive_link</a>\n\nNeed to make changes to 
+ this event?\nCancel: https://calendly.com/cancellations/0d9b14e1-81c7-47df-
+ bcd0-099cdb95124c\nReschedule: https://calendly.com/reschedulings/0d9b14e1-
+ 81c7-47df-bcd0-099cdb95124c\n\nPowered by Calendly.com\n
+LAST-MODIFIED:20240906T155735Z
+LOCATION:https://meet.google.com/fgx-vyvh-msr
+SEQUENCE:0
+STATUS:CONFIRMED
+SUMMARY:Toufique Eamam and Saurav Chandra Shil
+TRANSP:OPAQUE
+END:VEVENT
+END:VCALENDAR

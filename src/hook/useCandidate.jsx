@@ -13,7 +13,7 @@ const useCandidate = () => {
                     setIsCandidateLoading(true);
                     const response = await fetch(`http://localhost:5000/users/candidate/${user.email}`);
                     const data = await response.json();
-                    setIsCandidate(data?.role === "candidate");
+                    setIsCandidate(data.candidate || false);
                 } catch (error) {
                     console.error("Error checking candidate status:", error);
                     setIsCandidate(false);
