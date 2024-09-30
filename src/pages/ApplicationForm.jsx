@@ -25,6 +25,7 @@ const ApplicationForm = ({ jobId, posterEmail, applicantEmail, handleApplication
     setPdfFile(e.target.files[0]);
   };
 
+  
   const handleUpload = () => {
     if (!pdfFile) {
       alert("Please choose a file first!");

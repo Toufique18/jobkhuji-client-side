@@ -13,7 +13,7 @@ const Card = ({ card }) => {
         <BlurFade delay={0.25} inView>
             <div className="border border-gray-400 rounded-xl p-6 bg-gradient-to-r from-amber-100">
                 <div className="pb-4 flex items-center gap-3">
-                    <img className="h-4 w-4 p-3" src={img} alt="Company Logo" />
+                    <img className="h-4 w-4 p-2" src={img} alt="Company Logo" />
                     <div>
                         <h3 className="pb-2 text-base font-medium">{companyName}</h3>
                         <p className="inline-flex items-center gap-2 text-sm font-normal text-gray-400">

@@ -13,6 +13,7 @@ import UserProfile from "../pages/UserProfile";
 import UserPersonal from "../pages/candidateProfile/UserPersonal";
 import Userprofile from "../pages/candidateProfile/UserProfile";
 import SocialLink from "../pages/candidateProfile/SocialLink";
+import FavouriteJob from "../pages/FavouriteJob";
 
 //import PrivateRoute from "../pages/PrivateRoute";
 
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
                     {
                         path: 'myApplications',
                         element: <MyApplication></MyApplication>
+                    },
+                    {
+                        path: 'favouriteJobs',
+                        element: <FavouriteJob></FavouriteJob>
                     },
                     {
                         path: 'postJob',

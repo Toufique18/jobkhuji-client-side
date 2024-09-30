@@ -12,18 +12,20 @@ import img7 from '../assets/image/Envelope.svg';
 import img8 from '../assets/image/phone.svg';
 import img9 from '../assets/image/fi_arrow-right.svg';
 import { AuthContext } from '../provider/AuthProvider';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Details = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isTestPassed, setIsTestPassed] = useState(false);
   const [mcqQuestions, setMcqQuestions] = useState([]);
   const [userAnswers, setUserAnswers] = useState({});
-  
+
   const { user } = useContext(AuthContext);
   const jobs = useLoaderData();
   const { _id } = useParams();
   const job = jobs.find((job) => job._id === _id);
-  
+
   const navigate = useNavigate(); // Initialize navigate hook
 
   const userEmail = user ? user.email : '';
@@ -90,7 +92,7 @@ const Details = () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(formData),
-      
+
     })
       .then((response) => response.text()) // Parse the response as text
       .then((message) => {
@@ -104,10 +106,41 @@ const Details = () => {
         console.error('Error submitting application:', error);
       });
   };
+  // Function to handle adding job to favourites
+  const handleAddToFavourite = async () => {
+    const favouriteData = {
+      jobId: job._id,
+      email: userEmail,
+    };
+
+    try {
+      const response = await fetch('http://localhost:5000/add-favourite', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(favouriteData),
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        toast.success('Job added to favourites successfully!');
+      } else {
+        toast.error('Failed to add job to favourites.');
+      }
+    } catch (error) {
+      console.error('Error adding job to favourites:', error);
+      toast.error('There was an error, please try again.');
+    }
+  };
+
   return (
     <div>
-      <div className="bg-[#f1f2f4] justify-between items-center inline-flex w-full">
-        <h3 className="text-[#18191c] text-lg font-medium container mx-auto lg:px-12 px-5 py-5">Job Details</h3>
+      <div className="bg-[#f1f2f4]  w-full">
+        <div className='container mx-auto lg:px-12 px-5 py-5 justify-between items-center inline-flex'>
+          <h3 className="text-[#18191c] text-lg font-medium ">Job Details</h3>
+          <button className='btn ' onClick={handleAddToFavourite}>Add to Favourite</button>
+        </div>
       </div>
       <div className="container mx-auto lg:px-12 px-5 py-5">
         <div className="flex items-center justify-between py-5">
@@ -173,59 +206,60 @@ const Details = () => {
           </div>
         )}
         <div className="flex items-start">
-                    <div className="w-3/5">
-                        <h5 className="text-black text-lg font-medium font-['Inter'] pb-4">Job Description</h5>
-                        <p className="text-[#5e6670] text-base font-normal font-['Inter']">{job.jobDescription}</p>
+          <div className="w-3/5">
+            <h5 className="text-black text-lg font-medium font-['Inter'] pb-4">Job Description</h5>
+            <p className="text-[#5e6670] text-base font-normal font-['Inter']">{job.jobDescription}</p>
 
-                        <h5 className="text-black text-lg font-medium font-['Inter'] pt-4">Responsibilities</h5>
-                        <ul className="list-disc pl-5">
-                            {job.jobResponsibilities.map((responsibility, index) => (
-                                <li key={index} className="text-[#5e6670] text-base font-normal font-['Inter']">{responsibility}</li>
-                            ))}
-                        </ul>
-                    </div>
-                    <div className="w-2/5 p-8 bg-white rounded-lg border-2 border-[#e7f0fa] justify-start items-start">
-                        <h5 className="text-[#181f33] text-xl font-medium font-['Inter'] pb-5">Job Overview</h5>
-                        <div className="grid grid-cols-3 gap-6">
-                            <div className="text-start">
-                                <img className="h-9 w-9 pb-3" src={img2} alt="calendar" />
-                                <p className="text-[#767f8c] text-xs font-normal font-['Inter'] uppercase">Job Posted:</p>
-                                <h6 className="text-[#18191c] text-sm font-medium font-['Inter']">{formatDate(job.vacancyPostedDate)}</h6>
-                            </div>
-                            <div>
-                                <img className="h-9 w-9 pb-3" src={img3} alt="timer" />
-                                <p className="text-[#767f8c] text-xs font-normal font-['Inter'] uppercase">Job expires on:</p>
-                                <h6 className="text-[#18191c] text-sm font-medium font-['Inter']">{formatDate(job.vacancyExpireDate)}</h6>
-                            </div>
-                            <div>
-                                <img className="h-9 w-9 pb-3" src={img} alt="briefcase" />
-                                <p className="text-[#767f8c] text-xs font-normal font-['Inter'] uppercase">Education</p>
-                                <h6 className="text-[#18191c] text-sm font-medium font-['Inter']">{job.educationQualification}</h6>
-                            </div>
-                            <div>
-                                <img className="h-9 w-9 pb-3" src={img4} alt="wallet" />
-                                <p className="text-[#767f8c] text-xs font-normal font-['Inter'] uppercase">Salary:</p>
-                                <h6 className="text-[#18191c] text-sm font-medium font-['Inter']">BDT {job.salary}</h6>
-                            </div>
-                            <div>
-                                <img className="h-9 w-9 pb-3" src={img5} alt="location" />
-                                <p className="text-[#767f8c] text-xs font-normal font-['Inter'] uppercase">Location:</p>
-                                <h6 className="text-[#18191c] text-sm font-medium font-['Inter']">{job.location}</h6>
-                            </div>
-                            <div>
-                                <img className="h-9 w-9 pb-3" src={img} alt="briefcase" />
-                                <p className="text-[#767f8c] text-xs font-normal font-['Inter'] uppercase">Job Type:</p>
-                                <h6 className="text-[#18191c] text-sm font-medium font-['Inter']">{job.jobType}</h6>
-                            </div>
-                            <div>
-                                <img className="h-9 w-9 pb-3" src={img} alt="briefcase" />
-                                <p className="text-[#767f8c] text-xs font-normal font-['Inter'] uppercase">Experience:</p>
-                                <h6 className="text-[#18191c] text-sm font-medium font-['Inter']">{job.experience}</h6>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <h5 className="text-black text-lg font-medium font-['Inter'] pt-4">Responsibilities</h5>
+            <ul className="list-disc pl-5">
+              {job.jobResponsibilities.map((responsibility, index) => (
+                <li key={index} className="text-[#5e6670] text-base font-normal font-['Inter']">{responsibility}</li>
+              ))}
+            </ul>
+          </div>
+          <div className="w-2/5 p-8 bg-white rounded-lg border-2 border-[#e7f0fa] justify-start items-start">
+            <h5 className="text-[#181f33] text-xl font-medium font-['Inter'] pb-5">Job Overview</h5>
+            <div className="grid grid-cols-3 gap-6">
+              <div className="text-start">
+                <img className="h-9 w-9 pb-3" src={img2} alt="calendar" />
+                <p className="text-[#767f8c] text-xs font-normal font-['Inter'] uppercase">Job Posted:</p>
+                <h6 className="text-[#18191c] text-sm font-medium font-['Inter']">{formatDate(job.vacancyPostedDate)}</h6>
+              </div>
+              <div>
+                <img className="h-9 w-9 pb-3" src={img3} alt="timer" />
+                <p className="text-[#767f8c] text-xs font-normal font-['Inter'] uppercase">Job expires on:</p>
+                <h6 className="text-[#18191c] text-sm font-medium font-['Inter']">{formatDate(job.vacancyExpireDate)}</h6>
+              </div>
+              <div>
+                <img className="h-9 w-9 pb-3" src={img} alt="briefcase" />
+                <p className="text-[#767f8c] text-xs font-normal font-['Inter'] uppercase">Education</p>
+                <h6 className="text-[#18191c] text-sm font-medium font-['Inter']">{job.educationQualification}</h6>
+              </div>
+              <div>
+                <img className="h-9 w-9 pb-3" src={img4} alt="wallet" />
+                <p className="text-[#767f8c] text-xs font-normal font-['Inter'] uppercase">Salary:</p>
+                <h6 className="text-[#18191c] text-sm font-medium font-['Inter']">BDT {job.salary}</h6>
+              </div>
+              <div>
+                <img className="h-9 w-9 pb-3" src={img5} alt="location" />
+                <p className="text-[#767f8c] text-xs font-normal font-['Inter'] uppercase">Location:</p>
+                <h6 className="text-[#18191c] text-sm font-medium font-['Inter']">{job.location}</h6>
+              </div>
+              <div>
+                <img className="h-9 w-9 pb-3" src={img} alt="briefcase" />
+                <p className="text-[#767f8c] text-xs font-normal font-['Inter'] uppercase">Job Type:</p>
+                <h6 className="text-[#18191c] text-sm font-medium font-['Inter']">{job.jobType}</h6>
+              </div>
+              <div>
+                <img className="h-9 w-9 pb-3" src={img} alt="briefcase" />
+                <p className="text-[#767f8c] text-xs font-normal font-['Inter'] uppercase">Experience:</p>
+                <h6 className="text-[#18191c] text-sm font-medium font-['Inter']">{job.experience}</h6>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

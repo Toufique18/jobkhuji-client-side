@@ -4,8 +4,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const UserProfile = () => {
-    const { user } = useContext(AuthContext); // Assuming user is fetched from AuthContext
-    const email = user ? user.email : ''; // Assuming the user's email is available
+    const { user } = useContext(AuthContext); 
+    const email = user ? user.email : ''; 
 
     // Define state for each field
     const [nationality, setNationality] = useState('');
@@ -16,6 +16,7 @@ const UserProfile = () => {
     const [jobExperience, setJobExperience] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [biography, setBiography] = useState('');
+    const [category, setCategory] = useState('');
 
     // Fetch user data on component mount
     useEffect(() => {
@@ -33,6 +34,7 @@ const UserProfile = () => {
                     setJobExperience(data.jobExperience || '');
                     setPhoneNumber(data.phoneNumber || '');
                     setBiography(data.biography || '');
+                    setCategory(data.category || '');
                 }
             } catch (error) {
                 console.error('Error fetching user profile:', error);
@@ -57,6 +59,7 @@ const UserProfile = () => {
             jobExperience,
             phoneNumber,
             biography,
+            category,
         };
 
         try {
@@ -164,6 +167,25 @@ const UserProfile = () => {
                             onChange={(e) => setPhoneNumber(e.target.value)}
                         />
                     </div>
+                    <div>
+                        <label className="block">Favourites Job Category:</label>
+                        <select
+                            className="select select-bordered w-full"
+                            value={category}
+                            onChange={(e) => setCategory(e.target.value)}
+                        >
+                            <option value="Software Development">Software Development</option>
+                            <option value="Marketing and Sales">Marketing and Sales</option>
+                            <option value="Data Science and Analytics">Data Science and Analytics</option>
+                            <option value="Design and Creative">Design and Creative</option>
+                            <option value="Customer Support">Customer Support</option>
+                            <option value="Human Resources">Human Resources</option>
+                            <option value="Finance and Accounting">Finance and Accounting</option>
+                            <option value="Operations and Management">Operations and Management</option>
+                            {/* Add more options as needed */}
+                           
+                        </select>
+                    </div>
                 </div>
 
                 <div>
@@ -179,7 +201,7 @@ const UserProfile = () => {
                     Update Profile
                 </button>
             </form>
-            {/* Toast Container for displaying notifications */}
+          
             <ToastContainer />
         </div>
     );

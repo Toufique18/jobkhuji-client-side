@@ -50,7 +50,8 @@ const Dashboard = () => {
                         {isCandidate && (
                             <>
                                 <li><NavLink to={'/dashboard/findJobs'}>Find Jobs</NavLink></li>
-                                <li><NavLink to={'/dashboard/myApplications'}>My Applications</NavLink></li>
+                                <li><NavLink to={'/dashboard/myApplications'}>My Applied Jobs</NavLink></li>
+                                <li><NavLink to={'/dashboard/favouriteJobs'}>My Favourite Jobs</NavLink></li>
                                 <li><NavLink to={'/dashboard/userProfile'}>My Profile</NavLink></li>
                             </>
                         )}
