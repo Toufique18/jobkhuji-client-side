@@ -68,9 +68,16 @@ const MyApplication = () => {
                 try {
                     const response = await fetch(`http://localhost:5000/api/applications/${userEmail}`);
                     const data = await response.json();
-                    setAppliedJobs(data);
+
+                    // Ensure the response data is an array
+                    if (Array.isArray(data)) {
+                        setAppliedJobs(data);
+                    } else {
+                        setAppliedJobs([]); // If not an array, set to an empty array
+                    }
                 } catch (error) {
                     console.error('Error fetching applied jobs:', error);
+                    setAppliedJobs([]); // Handle the error by setting to an empty array
                 }
             };
 
@@ -78,8 +85,7 @@ const MyApplication = () => {
         }
     }, [userEmail]);
 
-
-    const handleDelete = _id => {
+    const handleDelete = (_id) => {
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -91,24 +97,29 @@ const MyApplication = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 fetch(`http://localhost:5000/api/applicationsDEL/${_id}`, {
-                    method: 'DELETE'
+                    method: 'DELETE',
                 })
-                    .then(res => res.json())
-                    .then(data => {
+                    .then((res) => res.json())
+                    .then((data) => {
                         if (data.deletedCount > 0) {
                             Swal.fire({
                                 title: "Deleted!",
                                 text: "Your application has been deleted.",
-                                icon: "success"
+                                icon: "success",
                             });
-                            // Remove the deleted contest from the state
-                            setAppliedJobs((prevJobs) => prevJobs.filter(app => app._id !== _id));
+                            // Remove the deleted application from the state
+                            setAppliedJobs((prevJobs) =>
+                                prevJobs.filter((app) => app._id !== _id)
+                            );
                         }
                     })
-                    .catch(error => console.error('Error deleting contest:', error));
+                    .catch((error) =>
+                        console.error('Error deleting application:', error)
+                    );
             }
         });
     };
+
     return (
         <div className='w-auto'>
             <h2>My Applications</h2>
@@ -126,3 +137,6 @@ const MyApplication = () => {
 };
 
 export default MyApplication;
+
+
+

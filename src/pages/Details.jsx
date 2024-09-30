@@ -1,7 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { useLoaderData, useParams, useNavigate } from 'react-router-dom'; // Import useNavigate
-import McqTest from './McqTest';
-import ApplicationForm from './ApplicationForm';
+import { useLoaderData, useParams, useNavigate } from 'react-router-dom';
 import img from '../assets/image/briefcase.svg';
 import img2 from '../assets/image/CalendarBlank.svg';
 import img3 from '../assets/image/Timer.svg';
@@ -15,20 +13,21 @@ import { AuthContext } from '../provider/AuthProvider';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const Details = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isTestPassed, setIsTestPassed] = useState(false);
-  const [mcqQuestions, setMcqQuestions] = useState([]);
-  const [userAnswers, setUserAnswers] = useState({});
+import CoverLetterModal from './CoverLetterModal'; // Import the Cover Letter Modal component
+import MCQModal from './MCQModal';
 
+const Details = () => {
   const { user } = useContext(AuthContext);
   const jobs = useLoaderData();
   const { _id } = useParams();
   const job = jobs.find((job) => job._id === _id);
 
-  const navigate = useNavigate(); // Initialize navigate hook
-
+  const navigate = useNavigate();
   const userEmail = user ? user.email : '';
+  
+  const [showMCQModal, setShowMCQModal] = useState(false);
+  const [showCoverLetterModal, setShowCoverLetterModal] = useState(false);
+  const [mcqScore, setMcqScore] = useState(0); // To store the user's score
 
   if (!job) {
     return <div>Job not found</div>;
@@ -39,73 +38,6 @@ const Details = () => {
     return date.toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' });
   };
 
-  const fetchMcqQuestions = async () => {
-    try {
-      const response = await fetch(`http://localhost:5000/mcq-questions`);
-      const data = await response.json();
-      setMcqQuestions(data.questions);
-    } catch (error) {
-      console.error('Error fetching MCQ questions:', error);
-    }
-  };
-
-  const handleApplyNow = () => {
-    fetchMcqQuestions();
-    setIsModalOpen(true);
-  };
-
-  const handleAnswerChange = (e, questionId) => {
-    setUserAnswers({
-      ...userAnswers,
-      [questionId]: e.target.value,
-    });
-  };
-
-  const handleTestSubmit = (e) => {
-    e.preventDefault();
-    let correctAnswers = 0;
-
-    mcqQuestions.forEach((question) => {
-      if (userAnswers[question._id] === question.correctAnswer) {
-        correctAnswers += 1;
-      }
-    });
-
-    const score = (correctAnswers / mcqQuestions.length) * 100;
-
-    if (score >= 70) {
-      setIsTestPassed(true);
-      alert(`Congratulations! You scored ${score}%. You can now apply.`);
-    } else {
-      alert(`You scored ${score}%. You need at least 70% to apply.`);
-      setIsModalOpen(false);
-      setUserAnswers({});
-      setIsTestPassed(false);
-      navigate('/customerSupports'); // Redirect to customer support page
-    }
-  };
-
-  const handleApplicationSubmit = (formData) => {
-    fetch('http://localhost:5000/apply', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-
-    })
-      .then((response) => response.text()) // Parse the response as text
-      .then((message) => {
-        alert(message); // Show the message from the server
-        setIsModalOpen(false);
-        setIsTestPassed(false);
-        setUserAnswers({});
-        console.log('Form data:', formData);
-      })
-      .catch((error) => {
-        console.error('Error submitting application:', error);
-      });
-  };
   // Function to handle adding job to favourites
   const handleAddToFavourite = async () => {
     const favouriteData = {
@@ -134,12 +66,28 @@ const Details = () => {
     }
   };
 
+  // Function to handle Apply Now button click
+  const handleApplyNow = () => {
+    setShowMCQModal(true);
+  };
+
+  // Function to handle score from the MCQ Modal
+  const handleMcqScore = (score) => {
+    setMcqScore(score);
+    if (score >= 70) {
+      setShowMCQModal(false);
+      setShowCoverLetterModal(true);
+    } else {
+      navigate('/customer-support'); // Redirect to customer support page
+    }
+  };
+
   return (
     <div>
-      <div className="bg-[#f1f2f4]  w-full">
+      <div className="bg-[#f1f2f4] w-full">
         <div className='container mx-auto lg:px-12 px-5 py-5 justify-between items-center inline-flex'>
-          <h3 className="text-[#18191c] text-lg font-medium ">Job Details</h3>
-          <button className='btn ' onClick={handleAddToFavourite}>Add to Favourite</button>
+          <h3 className="text-[#18191c] text-lg font-medium">Job Details</h3>
+          <button className='btn' onClick={handleAddToFavourite}>Add to Favourite</button>
         </div>
       </div>
       <div className="container mx-auto lg:px-12 px-5 py-5">
@@ -172,39 +120,13 @@ const Details = () => {
           <div className="text-end">
             <button
               className="btn text-white text-base font-semibold px-10 py-3 bg-[#0a65cc] rounded flex items-center gap-3"
-              onClick={handleApplyNow}
+              onClick={handleApplyNow} // Trigger the MCQ Modal on click
             >
               Apply now <img src={img9} alt="arrow" />
             </button>
             <p className="text-[#767f8c] text-sm">Job expires on: {formatDate(job.vacancyExpireDate)}</p>
           </div>
         </div>
-
-        {isModalOpen && (
-          <div className="modal modal-open">
-            <div className="modal-box w-11/12 max-w-5xl">
-              {!isTestPassed ? (
-                <McqTest
-                  mcqQuestions={mcqQuestions}
-                  handleAnswerChange={handleAnswerChange}
-                  handleTestSubmit={handleTestSubmit}
-                />
-              ) : (
-                <ApplicationForm
-                  jobId={job._id}
-                  posterEmail={job.posterEmail}
-                  applicantEmail={userEmail}
-                  handleApplicationSubmit={handleApplicationSubmit}
-                />
-              )}
-              <div className="modal-action">
-                <button className="btn" onClick={() => setIsModalOpen(false)}>
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
         <div className="flex items-start">
           <div className="w-3/5">
             <h5 className="text-black text-lg font-medium font-['Inter'] pb-4">Job Description</h5>
@@ -238,7 +160,7 @@ const Details = () => {
               <div>
                 <img className="h-9 w-9 pb-3" src={img4} alt="wallet" />
                 <p className="text-[#767f8c] text-xs font-normal font-['Inter'] uppercase">Salary:</p>
-                <h6 className="text-[#18191c] text-sm font-medium font-['Inter']">BDT {job.salary}</h6>
+                <h6 className="text-[#18191c] text-sm font-medium font-['Inter']">{job.salary}BDT</h6>
               </div>
               <div>
                 <img className="h-9 w-9 pb-3" src={img5} alt="location" />
@@ -246,19 +168,39 @@ const Details = () => {
                 <h6 className="text-[#18191c] text-sm font-medium font-['Inter']">{job.location}</h6>
               </div>
               <div>
-                <img className="h-9 w-9 pb-3" src={img} alt="briefcase" />
-                <p className="text-[#767f8c] text-xs font-normal font-['Inter'] uppercase">Job Type:</p>
-                <h6 className="text-[#18191c] text-sm font-medium font-['Inter']">{job.jobType}</h6>
-              </div>
-              <div>
-                <img className="h-9 w-9 pb-3" src={img} alt="briefcase" />
+                <img className="h-9 w-9 pb-3" src={img8} alt="experience" />
                 <p className="text-[#767f8c] text-xs font-normal font-['Inter'] uppercase">Experience:</p>
                 <h6 className="text-[#18191c] text-sm font-medium font-['Inter']">{job.experience}</h6>
+              </div>
+              <div>
+                <img className="h-9 w-9 pb-3" src={img6} alt="vacancy" />
+                <p className="text-[#767f8c] text-xs font-normal font-['Inter'] uppercase">Vacancies:</p>
+                <h6 className="text-[#18191c] text-sm font-medium font-['Inter']">{job.vacancyCount}</h6>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* MCQ Modal */}
+      {showMCQModal && (
+        <MCQModal 
+        onClose={() => setShowMCQModal(false)} 
+        onScore={handleMcqScore} 
+        category={job.categoryName} // or any relevant category you want
+      />
+      )}
+
+      {/* Cover Letter Modal */}
+      {showCoverLetterModal && (
+        <CoverLetterModal 
+          jobId={job._id}
+          userEmail={userEmail}
+          posterEmail={job.posterEmail}
+          onClose={() => setShowCoverLetterModal(false)} 
+        />
+      )}
+
       <ToastContainer />
     </div>
   );
