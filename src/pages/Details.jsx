@@ -187,7 +187,8 @@ const Details = () => {
         <MCQModal 
         onClose={() => setShowMCQModal(false)} 
         onScore={handleMcqScore} 
-        category={job.categoryName} // or any relevant category you want
+        category={job.categoryName}
+        jobId={job._id} 
       />
       )}
 

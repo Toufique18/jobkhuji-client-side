@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import CoverLetterModal from './CoverLetterModal';
 
-const MCQModal = ({ onClose, onScore, onCoverLetterOpen, category }) => {
+const MCQModal = ({ onClose, onScore, onCoverLetterOpen, category,jobId }) => {
   const [questions, setQuestions] = useState([]);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [loading, setLoading] = useState(true); // State for loading
@@ -52,7 +52,7 @@ const MCQModal = ({ onClose, onScore, onCoverLetterOpen, category }) => {
     // Show alert based on the score
     if (calculatedScore < 70) {
       alert(`Your Score: ${calculatedScore}%. You didn't pass the test.`);
-      window.location.href = '/customerSupports'; // Redirect to customer support page
+      window.location.href = `/customerSupports?category=${category}&jobId=${jobId}`; // Redirect to customer support page
     } else {
       alert(`Congratulations! Your Score: ${calculatedScore}%`);
       CoverLetterModal(); // Open the cover letter modal
