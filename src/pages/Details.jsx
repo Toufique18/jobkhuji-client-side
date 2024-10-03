@@ -93,7 +93,7 @@ const Details = () => {
       <div className="container mx-auto lg:px-12 px-5 py-5">
         <div className="flex items-center justify-between py-5">
           <div className="gap-3 flex items-center">
-            <img className="w-16 h-16 p-5 bg-gray-400 rounded-[100px]" src={job.companyLogoUrl} alt={job.companyName} />
+            <img className="w-16 h-16 bg-gray-400 rounded-[5px]" src={job.companyLogo} alt={job.companyName} />
             <div>
               <div className="gap-1 flex items-center">
                 <h2 className="text-[#18191c] text-2xl font-medium">{job.jobPostName}</h2>

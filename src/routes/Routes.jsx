@@ -14,6 +14,9 @@ import UserPersonal from "../pages/candidateProfile/UserPersonal";
 import Userprofile from "../pages/candidateProfile/UserProfile";
 import SocialLink from "../pages/candidateProfile/SocialLink";
 import FavouriteJob from "../pages/FavouriteJob";
+import PostedJob from "../pages/PostedJob";
+import UpdateJob from "../pages/UpdateJob";
+import Applications from "../pages/Applications";
 
 //import PrivateRoute from "../pages/PrivateRoute";
 
@@ -63,6 +66,18 @@ const router = createBrowserRouter([
                     {
                         path: 'postJob',
                         element: <PostJob></PostJob>
+                    },
+                    {
+                        path: 'myPostedJobs',
+                        element: <PostedJob></PostedJob>
+                    },
+                    {
+                        path: 'update-job/:jobId',
+                        element: <UpdateJob></UpdateJob>
+                    },
+                    {
+                        path: 'applicationsinfo/:jobId',
+                        element: <Applications></Applications>
                     },
                     {
                         path: 'userProfile',
