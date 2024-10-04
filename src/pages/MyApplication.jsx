@@ -15,11 +15,11 @@ const JobCard = ({ application, handleDelete }) => {
     const jobStatus = daysLeft > 0 ? 'Active' : 'Expired';
 
     return (
-        <div className="card w-11/12 bg-white shadow-lg flex flex-row p-4 items-center gap-4 mb-4">
+        <div className="card bg-white shadow-lg flex flex-row p-4 items-center gap-4 mb-4">
             {/* Company Logo */}
             <div className="logo">
                 <img
-                    src={`https://logo-placeholder.com/company/${jobDetails.companyName}`} 
+                    src={jobDetails.companyLogo}
                     alt={jobDetails.companyName}
                     className="w-16 h-16 object-cover rounded-full"
                 />
@@ -33,25 +33,34 @@ const JobCard = ({ application, handleDelete }) => {
 
                 <div className="flex items-center gap-2 text-sm mt-2">
                     <p><strong>Location:</strong> {jobDetails.location}</p>
-                    <p><strong>Salary:</strong> ${jobDetails.salary}</p>
+                    <p><strong>Salary:</strong>{jobDetails.salary} BDT</p>
                 </div>
             </div>
 
-            <div className="flex items-center text-sm gap-4">
+            <div className="grid grid-cols-1 items-center text-sm gap-4">
                 <span className="text-gray-700">
                     {daysLeft > 0 ? `${daysLeft} days left` : 'Expired'}
                 </span>
-                <span className={`px-2 py-1 rounded-full text-white ${jobStatus === 'Active' ? 'bg-green-500' : 'bg-red-500'}`}>
+                <span className={`px-2 py-1 rounded-full text-center items-center text-white ${jobStatus === 'Active' ? 'bg-green-500' : 'bg-red-500'}`}>
                     {jobStatus}
                 </span>
             </div>
-            <div className="flex gap-2">
+
+            <div className="grid grid-cols-1 gap-2">
+
                 <Link to={`/details/${jobDetails._id}`}>
                     <button className='btn btn-primary'>Details</button>
                 </Link>
                 <button onClick={() => handleDelete(_id)} className='btn'>Delete</button>
-                
+
             </div>
+            {application.status && application.message && (
+                <div>
+                    <p>Your application <strong>{application.status}</strong></p>
+                    <p><strong>{application.message}</strong></p>
+                </div>
+            )}
+
         </div>
     );
 };

@@ -1,62 +1,78 @@
-import { useContext } from "react";
+import { useState, useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../provider/AuthProvider";
 import Swal from "sweetalert2";
 import { updateProfile } from "firebase/auth";
-//import { FcGoogle } from "react-icons/fc";
 
 const Register = () => {
-
-    const { createUser, signInWithGoogle } = useContext(AuthContext);
+    const { createUser } = useContext(AuthContext);
     const location = useLocation();
     const navigate = useNavigate();
 
-    const handleRegister = e => {
+    const [imageFile, setImageFile] = useState(null); // State to store the selected image file
+
+    const handleRegister = async (e) => {
         e.preventDefault();
         const form = new FormData(e.currentTarget);
 
         const name = form.get('name');
-        const photo = form.get('photo');
         const email = form.get('email');
         const password = form.get('password');
         const role = form.get('role');
-        console.log(name, photo, email, password, role);
+        console.log(name, email, password, role);
 
-        // create user
-        createUser(email, password)
-            .then(result => {
-                Swal.fire({
-                    title: 'Success!',
-                    text: 'User registered successfully',
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                });
+        let photoURL = ""; // Default empty photo URL
 
-                // update profile
-                updateProfile(result.user, {
-                    displayName: name,
-                    photoURL: photo
-                }).then(() => {
-                    // Save user info to MongoDB
-                    saveUserToDatabase(result.user, role);
-                });
-            })
-            .catch(error => {
-                console.error(error);
+        try {
+            if (imageFile) {
+                // Upload image if selected
+                photoURL = await uploadImage(imageFile);
+            }
+
+            // Create user
+            const result = await createUser(email, password);
+
+            Swal.fire({
+                title: 'Success!',
+                text: 'User registered successfully',
+                icon: 'success',
+                confirmButtonText: 'OK',
             });
-    }
+
+            // Update profile with display name and photo URL
+            await updateProfile(result.user, {
+                displayName: name,
+                photoURL,
+            });
+
+            // Save user info to MongoDB
+            saveUserToDatabase(result.user, role);
+
+            // Navigate to a different page after successful registration
+            navigate('/login');
+        } catch (error) {
+            console.error(error);
+            Swal.fire({
+                title: 'Error!',
+                text: 'Registration failed',
+                icon: 'error',
+                confirmButtonText: 'OK',
+            });
+        }
+    };
 
     const saveUserToDatabase = (user, role) => {
         fetch('http://localhost:5000/users', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 displayName: user.displayName,
+                photoURL: user.photoURL, // Photo URL from imgBB
                 email: user.email,
-                role: role  // Save the user role
-            })
+                role: role,  // Save the user role
+            }),
         })
             .then(response => response.json())
             .then(data => {
@@ -67,7 +83,33 @@ const Register = () => {
             });
     };
 
+    // Function to upload image to imgBB
+    const uploadImage = async (imageFile) => {
+        try {
+            const formData = new FormData();
+            formData.append("image", imageFile);
 
+            const response = await fetch(`https://api.imgbb.com/1/upload?key=e04b2c2c85ddbc2b9379722536771dca`, {
+                method: "POST",
+                body: formData,
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                return data.data.display_url; // Return hosted image URL
+            } else {
+                throw new Error('Failed to upload image');
+            }
+        } catch (error) {
+            console.error('Error uploading image:', error);
+            throw error;
+        }
+    };
+
+    // Handle image file selection
+    const handleImageChange = (e) => {
+        setImageFile(e.target.files[0]);
+    };
 
     return (
         <div>
@@ -82,9 +124,9 @@ const Register = () => {
                     </div>
                     <div className="form-control">
                         <label className="label">
-                            <span className="label-text">Photo URL</span>
+                            <span className="label-text">Profile Picture</span>
                         </label>
-                        <input type="text" required name="photo" placeholder="Photo URL" className="input input-bordered" />
+                        <input type="file" name="photo" accept="image/*" onChange={handleImageChange} className="input input-bordered" />
                     </div>
                     <div className="form-control">
                         <label className="label">
@@ -115,13 +157,10 @@ const Register = () => {
                     </div>
                 </form>
 
-                {/* <div className="text-center">
-                <button onClick={handleGoogleSignIn} className="btn btn-ghost"><FcGoogle />
-                        Login with Google</button>
-                </div> */}
-                <p className="text-center mt-4">Have an account? please <Link className="text-blue-600 font-bold" to="/login">Login</Link></p>
+                <p className="text-center mt-4">
+                    Have an account? please <Link className="text-blue-600 font-bold" to="/login">Login</Link>
+                </p>
             </div>
-
         </div>
     );
 };

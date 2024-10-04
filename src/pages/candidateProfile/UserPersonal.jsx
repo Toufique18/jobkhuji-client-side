@@ -3,7 +3,6 @@ import { getAuth, updateProfile } from 'firebase/auth';
 import { useDropzone } from 'react-dropzone';
 import CvResume from '../../components/CvResume';
 
-
 const UserPersonal = () => {
     const auth = getAuth();
     const user = auth.currentUser;
@@ -47,9 +46,14 @@ const UserPersonal = () => {
             if (newProfilePic) {
                 const newPhotoURL = await uploadImage(newProfilePic);
                 updateObj.photoURL = newPhotoURL;
+
+                // Update the user's profile in Firebase
+                await updateProfile(user, updateObj);
+
+                // Update the user's photo URL in MongoDB using email
+                await updateUserInDatabase(user.email, newPhotoURL);
             }
 
-            await updateProfile(user, updateObj);
             alert('Profile updated successfully');
         } catch (error) {
             console.error('Error updating profile:', error);
@@ -59,13 +63,36 @@ const UserPersonal = () => {
         }
     };
 
+    // API call to update user in MongoDB by email
+    const updateUserInDatabase = async (email, photoURL) => {
+        try {
+            const response = await fetch(`http://localhost:5000/usersPhoto/${email}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ photoURL }), // Only updating the photoURL
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log('User photo updated in the database:', data);
+            } else {
+                throw new Error('Failed to update user in the database');
+            }
+        } catch (error) {
+            console.error('Error updating user in the database:', error);
+        }
+    };
+
+    // Upload the new image to imgbb
     const uploadImage = async (imageFile) => {
         try {
             const formData = new FormData();
-            formData.append("image", imageFile);
+            formData.append('image', imageFile);
 
             const response = await fetch(`https://api.imgbb.com/1/upload?key=e04b2c2c85ddbc2b9379722536771dca`, {
-                method: "POST",
+                method: 'POST',
                 body: formData,
             });
 
@@ -73,20 +100,20 @@ const UserPersonal = () => {
                 const data = await response.json();
                 return data.data.display_url;
             } else {
-                throw new Error("Failed to upload image");
+                throw new Error('Failed to upload image');
             }
         } catch (error) {
-            console.error("Error uploading image:", error);
+            console.error('Error uploading image:', error);
             throw error;
         }
     };
-    
+
     return (
         <div>
-            <div className=" bg-white p-6 rounded-lg shadow-md">
+            <div className="bg-white p-6 rounded-lg shadow-md">
                 <h1 className="text-2xl font-bold mb-4">Basic Information</h1>
 
-                <div className='flex gap-3'>
+                <div className="flex gap-3">
                     <div className="mb-6">
                         <label className="block text-sm font-medium mb-2">Profile Picture</label>
                         <div
@@ -100,7 +127,8 @@ const UserPersonal = () => {
                                 <span>
                                     <p>Click here for Browse photo or drop </p>
                                     <p>here for update your profile picture</p>
-                                </span>)}
+                                </span>
+                            )}
                             {profilePic && (
                                 <img
                                     src={profilePic}

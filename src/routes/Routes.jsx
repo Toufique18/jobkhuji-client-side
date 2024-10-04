@@ -17,6 +17,7 @@ import FavouriteJob from "../pages/FavouriteJob";
 import PostedJob from "../pages/PostedJob";
 import UpdateJob from "../pages/UpdateJob";
 import Applications from "../pages/Applications";
+import Profile from "../pages/Profile";
 
 //import PrivateRoute from "../pages/PrivateRoute";
 
@@ -78,6 +79,10 @@ const router = createBrowserRouter([
                     {
                         path: 'applicationsinfo/:jobId',
                         element: <Applications></Applications>
+                    },
+                    {
+                        path: 'profileApp/:userId',
+                        element: <Profile></Profile>
                     },
                     {
                         path: 'userProfile',

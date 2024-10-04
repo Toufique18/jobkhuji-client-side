@@ -22,46 +22,48 @@ const Dashboard = () => {
     }
 
     return (
-        <div className="lg:flex bg-white">
-            <div className="drawer lg:w-1/4 lg:drawer-open">
-                <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
-                <div className="drawer-content items-start justify-center">
-                    <label htmlFor="my-drawer-2" className="btn btn-ghost drawer-button lg:hidden">Open sidebar</label>
-                </div>
-                <div className="drawer-side">
-                    <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
-                    <ul className="menu w-72 min-h-full border border-l-2 pr-4 text-base-content">
-                        <li><NavLink to={'/'}>Home</NavLink></li>
-                        <div className="divider"></div>
+        <div className="container mx-auto lg:px-12 px-5 py-5">
+            <div className="lg:flex bg-white">
+                <div className="drawer lg:w-1/4 lg:drawer-open">
+                    <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
+                    <div className="drawer-content items-start justify-center">
+                        <label htmlFor="my-drawer-2" className="btn btn-ghost drawer-button lg:hidden">Open sidebar</label>
+                    </div>
+                    <div className="drawer-side">
+                        <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
+                        <ul className="menu w-72 min-h-full border border-l-2 pr-4 text-base-content">
+                            <li><NavLink to={'/'}>Home</NavLink></li>
+                            <div className="divider"></div>
 
-                        {isAdmin && (
-                            <>
-                                <li><NavLink to={'/dashboard/manageUser'}>Manage Users</NavLink></li>
-                                
-                            </>
-                        )}
-                        {isEmployer && (
-                            <>
-                                <li><NavLink to={'/dashboard/postJob'}>Post Job</NavLink></li>
-                                <li><NavLink to={'/dashboard/myPostedJobs'}>My Posted Jobs</NavLink></li>
-                                <li><NavLink to={'/dashboard/jobApplications'}>Job Applications</NavLink></li>
-                            </>
-                        )}
-                        {isCandidate && (
-                            <>
-                                <li><NavLink to={'/dashboard/findJobs'}>Find Jobs</NavLink></li>
-                                <li><NavLink to={'/dashboard/myApplications'}>My Applied Jobs</NavLink></li>
-                                <li><NavLink to={'/dashboard/favouriteJobs'}>My Favourite Jobs</NavLink></li>
-                                <li><NavLink to={'/dashboard/userProfile'}>My Profile</NavLink></li>
-                            </>
-                        )}
+                            {isAdmin && (
+                                <>
+                                    <li><NavLink to={'/dashboard/manageUser'}>Manage Users</NavLink></li>
 
-                        <div className="divider"></div>
-                    </ul>
+                                </>
+                            )}
+                            {isEmployer && (
+                                <>
+                                    <li><NavLink to={'/dashboard/postJob'}>Post Job</NavLink></li>
+                                    <li><NavLink to={'/dashboard/myPostedJobs'}>My Posted Jobs</NavLink></li>
+                                    <li><NavLink to={'/dashboard/jobApplications'}>Job Applications</NavLink></li>
+                                </>
+                            )}
+                            {isCandidate && (
+                                <>
+                                    <li><NavLink to={'/dashboard/findJobs'}>Find Jobs</NavLink></li>
+                                    <li><NavLink to={'/dashboard/myApplications'}>My Applied Jobs</NavLink></li>
+                                    <li><NavLink to={'/dashboard/favouriteJobs'}>My Favourite Jobs</NavLink></li>
+                                    <li><NavLink to={'/dashboard/userProfile'}>My Profile</NavLink></li>
+                                </>
+                            )}
+
+                            <div className="divider"></div>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            <div className="w-3/4">
-                <Outlet />
+                <div className="w-3/4">
+                    <Outlet />
+                </div>
             </div>
         </div>
     );

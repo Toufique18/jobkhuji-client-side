@@ -17,6 +17,7 @@ const UserProfile = () => {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [biography, setBiography] = useState('');
     const [category, setCategory] = useState('');
+    const [currentjob, setCurrentjob] = useState('');
 
     // Fetch user data on component mount
     useEffect(() => {
@@ -35,6 +36,7 @@ const UserProfile = () => {
                     setPhoneNumber(data.phoneNumber || '');
                     setBiography(data.biography || '');
                     setCategory(data.category || '');
+                    setCurrentjob(data.currentjob || '');
                 }
             } catch (error) {
                 console.error('Error fetching user profile:', error);
@@ -60,6 +62,7 @@ const UserProfile = () => {
             phoneNumber,
             biography,
             category,
+            currentjob,
         };
 
         try {
@@ -127,7 +130,7 @@ const UserProfile = () => {
                             value={maritalStatus}
                             onChange={(e) => setMaritalStatus(e.target.value)}
                         >
-                            <option value="not married">Not Married</option>
+                            <option value="not married">Single</option>
                             <option value="married">Married</option>
                         </select>
                     </div>
@@ -139,6 +142,7 @@ const UserProfile = () => {
                             value={education}
                             onChange={(e) => setEducation(e.target.value)}
                         >
+                            <option value="">Select</option>
                             <option value="BSc in CSE">BSc in CSE</option>
                             <option value="BSc in EEE">BSc in EEE</option>
                             <option value="BBA">BBA</option>
@@ -165,6 +169,15 @@ const UserProfile = () => {
                             className="input input-bordered w-full"
                             value={phoneNumber}
                             onChange={(e) => setPhoneNumber(e.target.value)}
+                        />
+                    </div>
+                    <div>
+                        <label className="block">Job Title:</label>
+                        <input
+                            type="text"
+                            className="input input-bordered w-full"
+                            value={currentjob}
+                            onChange={(e) => setCurrentjob(e.target.value)}
                         />
                     </div>
                     <div>

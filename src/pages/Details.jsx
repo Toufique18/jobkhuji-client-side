@@ -13,7 +13,7 @@ import { AuthContext } from '../provider/AuthProvider';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import CoverLetterModal from './CoverLetterModal'; // Import the Cover Letter Modal component
+import CoverLetterModal from './CoverLetterModal'; 
 import MCQModal from './MCQModal';
 
 const Details = () => {
@@ -27,7 +27,7 @@ const Details = () => {
   
   const [showMCQModal, setShowMCQModal] = useState(false);
   const [showCoverLetterModal, setShowCoverLetterModal] = useState(false);
-  const [mcqScore, setMcqScore] = useState(0); // To store the user's score
+  const [mcqScore, setMcqScore] = useState(0); 
 
   if (!job) {
     return <div>Job not found</div>;
@@ -38,7 +38,12 @@ const Details = () => {
     return date.toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' });
   };
 
-  // Function to handle adding job to favourites
+  const isJobExpired = () => {
+    const today = new Date();
+    const expireDate = new Date(job.vacancyExpireDate);
+    return today > expireDate;
+  };
+
   const handleAddToFavourite = async () => {
     const favouriteData = {
       jobId: job._id,
@@ -66,19 +71,17 @@ const Details = () => {
     }
   };
 
-  // Function to handle Apply Now button click
   const handleApplyNow = () => {
     setShowMCQModal(true);
   };
 
-  // Function to handle score from the MCQ Modal
   const handleMcqScore = (score) => {
     setMcqScore(score);
     if (score >= 70) {
       setShowMCQModal(false);
       setShowCoverLetterModal(true);
     } else {
-      navigate('/customer-support'); // Redirect to customer support page
+      navigate('/customer-support'); 
     }
   };
 
@@ -118,12 +121,16 @@ const Details = () => {
             </div>
           </div>
           <div className="text-end">
-            <button
-              className="btn text-white text-base font-semibold px-10 py-3 bg-[#0a65cc] rounded flex items-center gap-3"
-              onClick={handleApplyNow} // Trigger the MCQ Modal on click
-            >
-              Apply now <img src={img9} alt="arrow" />
-            </button>
+            {isJobExpired() ? (
+              <p className="text-red-600 text-sm">The application period has expired.</p>
+            ) : (
+              <button
+                className="btn text-white text-base font-semibold px-10 py-3 bg-[#0a65cc] rounded flex items-center gap-3"
+                onClick={handleApplyNow} 
+              >
+                Apply now <img src={img9} alt="arrow" />
+              </button>
+            )}
             <p className="text-[#767f8c] text-sm">Job expires on: {formatDate(job.vacancyExpireDate)}</p>
           </div>
         </div>
@@ -185,11 +192,11 @@ const Details = () => {
       {/* MCQ Modal */}
       {showMCQModal && (
         <MCQModal 
-        onClose={() => setShowMCQModal(false)} 
-        onScore={handleMcqScore} 
-        category={job.categoryName}
-        jobId={job._id} 
-      />
+          onClose={() => setShowMCQModal(false)} 
+          onScore={handleMcqScore} 
+          category={job.categoryName}
+          jobId={job._id} 
+        />
       )}
 
       {/* Cover Letter Modal */}
