@@ -71,7 +71,7 @@ const PostJob = () => {
                 companyName,
                 categoryName,
                 jobDescription,
-                jobResponsibilities, // This is an array now
+                jobResponsibilities, 
                 jobType,
                 salary,
                 location,

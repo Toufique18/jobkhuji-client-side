@@ -109,7 +109,7 @@ const UserPersonal = () => {
     };
 
     return (
-        <div>
+        <div className=''>
             <div className="bg-white p-6 rounded-lg shadow-md">
                 <h1 className="text-2xl font-bold mb-4">Basic Information</h1>
 
@@ -170,7 +170,7 @@ const UserPersonal = () => {
                     {isUpdating ? 'Updating...' : 'Update Profile'}
                 </button>
             </div>
-            <div className="mt-6">
+            <div className="bg-white p-6 rounded-lg shadow-md">
                 <CvResume></CvResume>
             </div>
         </div>

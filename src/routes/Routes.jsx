@@ -18,6 +18,7 @@ import PostedJob from "../pages/PostedJob";
 import UpdateJob from "../pages/UpdateJob";
 import Applications from "../pages/Applications";
 import Profile from "../pages/Profile";
+import ManageEmployer from "../pages/admin/ManageEmployer";
 
 //import PrivateRoute from "../pages/PrivateRoute";
 
@@ -67,6 +68,10 @@ const router = createBrowserRouter([
                     {
                         path: 'postJob',
                         element: <PostJob></PostJob>
+                    },
+                    {
+                        path: 'manageEmployer',
+                        element: <ManageEmployer></ManageEmployer>
                     },
                     {
                         path: 'myPostedJobs',

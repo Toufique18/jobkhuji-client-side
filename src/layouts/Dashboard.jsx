@@ -32,12 +32,31 @@ const Dashboard = () => {
                     <div className="drawer-side">
                         <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
                         <ul className="menu w-72 min-h-full border border-l-2 pr-4 text-base-content">
-                            <li><NavLink to={'/'}>Home</NavLink></li>
+                            
+                            {isAdmin && (
+                                <>
+                                    <li><strong className="text-xl">Admin Dashboard</strong></li>
+
+                                </>
+                            )}
+                            {isEmployer && (
+                                <>
+                                    <li><strong className="text-xl">Employer Dashboard</strong></li>
+
+                                </>
+                            )}
+                            {isCandidate && (
+                                <>
+                                    <li><strong className="text-xl">Candidate Dashboard</strong></li>
+
+                                </>
+                            )}
                             <div className="divider"></div>
 
                             {isAdmin && (
                                 <>
-                                    <li><NavLink to={'/dashboard/manageUser'}>Manage Users</NavLink></li>
+                                    <li><NavLink to={'/dashboard/manageEmployer'}>Manage Employer</NavLink></li>
+                                    <li><NavLink to={'/dashboard/manageCandidate'}>Manage Candidate</NavLink></li>
 
                                 </>
                             )}

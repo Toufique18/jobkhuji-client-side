@@ -1,44 +1,59 @@
 import { useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../provider/AuthProvider";
-import { FcGoogle } from "react-icons/fc";
-
+import Swal from "sweetalert2";
 
 const Login = () => {
-    const { signIn, signInWithGoogle, signInWithGithub } = useContext(AuthContext);
+    const { signIn } = useContext(AuthContext);
     const location = useLocation();
     const navigate = useNavigate();
 
-    const handleSignin = e => {
+    const handleSignin = async (e) => {
         e.preventDefault();
-        console.log(e.currentTarget);
         const form = new FormData(e.currentTarget);
-        const email = form.get('email');
-        const password = form.get('password');
-        console.log(email, password);
-        signIn(email, password)
-            .then(result => {
-                console.log(result.user);
+        const email = form.get("email");
+        const password = form.get("password");
 
-                navigate(location?.state ? location.state : '/');
+        try {
+            // Step 1: Check if user is banned before Firebase login
+            const response = await fetch(`http://localhost:5000/users/${email}`);
+            const userData = await response.json();
 
-            })
-            .catch(error => {
-                console.error(error);
-            })
-    }
-    // const handleGoogleSignIn = async () => {
-    //     try {
-    //         const result = await signInWithGoogle();
-    //         // Save user info to MongoDB
-    //         saveUserToDatabase(result.user);
-    //         navigate(location?.state ? location.state : "/");
-    //     } catch (error) {
-    //         console.error("Google sign in error:", error);
-    //     }
-    // };
+            // Step 2: If the user is banned, show Swal and prevent Firebase login
+            if (userData.isBanned) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Account Banned",
+                    text: "Your account has been banned. Please contact support for further assistance.",
+                });
+            } else {
+                // Step 3: Proceed with Firebase login only if the user is not banned
+                signIn(email, password)
+                    .then((result) => {
+                        console.log(result.user);
 
-    
+                        // Step 4: Navigate the user to the desired route
+                        navigate(location?.state ? location.state : "/");
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                        Swal.fire({
+                            icon: "error",
+                            title: "Login Failed",
+                            text: "Invalid email or password. Please try again.",
+                        });
+                    });
+            }
+        } catch (error) {
+            console.error("Error checking ban status:", error);
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "An error occurred while checking your account status. Please try again.",
+            });
+        }
+    };
+
     return (
         <div className="container mx-auto lg:px-20 px-5 py-5">
             <div>
@@ -55,18 +70,14 @@ const Login = () => {
                             <span className="label-text">Password</span>
                         </label>
                         <input type="password" required name="password" placeholder="Password" className="input input-bordered" />
-
                     </div>
                     <div className="form-control mt-6">
                         <button className="btn btn-primary">Login</button>
                     </div>
                 </form>
-                {/* <div className="text-center mt-4 flex gap-2 justify-center">
-                    <button onClick={handleGoogleSignIn} className="btn btn-ghost"><FcGoogle />
-                        Login with Google</button>
-                    
-                </div> */}
-                <p className="text-center mt-4">Do not have an account Please <Link className="text-purple-500 font-bold" to="/register">Register</Link></p>
+                <p className="text-center mt-4">
+                    Do not have an account? Please <Link className="text-purple-500 font-bold" to="/register">Register</Link>
+                </p>
             </div>
         </div>
     );
